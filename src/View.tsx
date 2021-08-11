@@ -20,7 +20,7 @@ function View() {
     }, [url]);
 
     return (
-        <iframe title="iframe" style={{ height: '100%', width: '100%' }} src={url} />
+        <iframe data-cy="iframe" title="iframe" style={{ height: '100%', width: '100%' }} src={url} />
     );
 };
 

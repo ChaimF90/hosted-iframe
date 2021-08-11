@@ -14,6 +14,7 @@ function Entry() {
         <div>
             <input data- type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
             <button onClick={setUrlAndGoToViewPage}>Set</button>
+            <button className="some-button">Whatever</button>
         </div>
     );
 
