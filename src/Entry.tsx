@@ -1,20 +1,34 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 
 function Entry() {
-    const history = useHistory();
     const [url, setUrl] = useState('');
+    const [testsRunning, setTestsRunning] = useState(false);
 
     function setUrlAndGoToViewPage() {
-        localStorage.setItem('url', url);
-        history.push(`/view`);
+        const id = uuid();
+        axios({
+            method: 'post',
+            data: {
+                id,
+                url
+            },
+            url: 'http://localhost:5000/api/solution'
+        }).then(() => {
+            setTestsRunning(true);
+            axios.post(`http://localhost:5000/api/cypress/${id}`)
+                .then(res => console.log(res))
+                .catch(res => console.log(res))
+                .finally(() => setTestsRunning(false));
+        })
     }
 
     return (
         <div>
-            <input data- type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
+            <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} />
             <button onClick={setUrlAndGoToViewPage}>Set</button>
-            <button className="some-button">Whatever</button>
+            {testsRunning && <h1>The tests are running.....</h1>}
         </div>
     );
 

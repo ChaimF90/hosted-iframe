@@ -1,28 +1,22 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Iframe } from './Iframe';
 
 function View() {
+    const { id } = useParams<{ id: string }>();
     const [url, setUrl] = useState('');
 
     useEffect(() => {
-        const url = localStorage.getItem('url');
-        if (url) {
-            setUrl(url);
-        } else {
-            setUrl('http://localhost:3000');
-        }
-    }, []);
-
-    useEffect(() => {
-        if (url) {
-            axios.post('http://localhost:5000/api/cypress')
-                .then(res => console.log(res))
-                .catch(res => console.log(res));
-        }
-    }, [url]);
+        axios({
+            url: `http://localhost:5000/api/solution/${id}`
+        }).then((res) => setUrl(res.data.url));
+    }, [id]);
 
     return (
-        <iframe data-cy="iframe" title="iframe" style={{ height: '100%', width: '100%' }} src={url} />
+        <div>
+            {url && <Iframe url={url} id={id} />}
+        </div>
     );
 };
 
