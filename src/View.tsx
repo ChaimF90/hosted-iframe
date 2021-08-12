@@ -8,6 +8,8 @@ function View() {
         const url = localStorage.getItem('url');
         if (url) {
             setUrl(url);
+        } else {
+            setUrl('http://localhost:3000');
         }
     }, []);
 
